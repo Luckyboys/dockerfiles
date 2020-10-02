@@ -1,0 +1,9 @@
+FROM golang:1.14 AS go-env
+RUN go env -w GO111MODULE="on"
+RUN go get github.com/gogo/protobuf/protoc-gen-gofast
+RUN go get github.com/micro/micro/v2/cmd/protoc-gen-micro
+#RUN go get github.com/micro/micro/v2
+
+FROM znly/protoc
+COPY --from=go-env /go /go
+ENV PATH="/go/bin:${PATH}"
